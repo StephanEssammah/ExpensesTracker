@@ -43,10 +43,22 @@ const Dashboard: React.FC<Props> = ({month, setMonth}) => {
       </div>
 
       <div className="dashboard__categories">
-        <DashboardCategory category='Home' amount={Home} Icon={() => <AiOutlineHome size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
-        <DashboardCategory category='Groceries' amount={Groceries} Icon={() => <GiMeal size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
-        <DashboardCategory category='Travel' amount={Travel} Icon={() => <AiFillCar size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
-        <DashboardCategory category='Other' amount={Other} Icon={() => <MdCategory size="2.5em" className="dashboard__categories__category__left__logo"/>} />
+        <DashboardCategory 
+          category='Home' 
+          amount={Home} 
+          Icon={() => <AiOutlineHome size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
+        <DashboardCategory 
+          category='Groceries' 
+          amount={Groceries} 
+          Icon={() => <GiMeal size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
+        <DashboardCategory 
+          category='Travel' 
+          amount={Travel} 
+          Icon={() => <AiFillCar size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
+        <DashboardCategory 
+          category='Other' 
+          amount={Other} 
+          Icon={() => <MdCategory size="2.5em" className="dashboard__categories__category__left__logo"/>} />
       </div>
     </div>
   )

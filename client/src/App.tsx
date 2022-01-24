@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Add from './components/Add';
 import Dashboard from './components/Dashboard';
+import { Navbar } from './components/Navbar';
 
 const generateData = () => {
   const data = []
@@ -29,20 +30,23 @@ const year = [
     },
 ]
 
-// const date = new Date().toLocaleDateString('en-GB')
-// const split = date.split('/')
-// console.log(split)
+
 const App = () => {
   const [month, setMonth] = useState(0)
+  const [page, setPage] = useState("Home")
 
   return (
     <div className="App">
-      {true 
-        ? <Dashboard month={year[month]} setMonth={setMonth}/>
-        : <Add />
-      }
+      {page === "Home" &&  <Dashboard month={year[month]} setMonth={setMonth}/>}
+      {page === "Add" && <Add />}
+      <Navbar setPage={setPage}/>
     </div>
   );
 }
 
 export default App;
+
+
+// const date = new Date().toLocaleDateString('en-GB')
+// const split = date.split('/')
+// console.log(split)

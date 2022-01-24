@@ -1,0 +1,27 @@
+.nav {
+  padding: 0 1em;
+  background-color: var(--clr-background);
+  height: 5em;
+  color: white;
+  filter: drop-shadow(0 -0.1em 1em #d0ef0a3d);
+  display: flex;
+  justify-content: space-between;
+
+  &__button {
+    background: none;
+    border: none;
+    line-height: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    &__active {
+      color: var(--clr-accent);
+    }
+  }
+}
+
+.nav__logo {
+  color: red;
+}

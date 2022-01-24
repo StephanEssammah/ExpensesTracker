@@ -1,7 +1,7 @@
 .add {
   background-color: var(--clr-background);
   padding: 1em;
-  height: 100vh;
+  height: calc(100vh - 5em);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +42,10 @@
     
         }
       }
+
+      &__option {
+        background-color: var(--clr-background);
+      }
     }
   }
 
@@ -55,4 +59,25 @@
   font-size: 1.25em;
   font-weight: 500;
  }
+}
+
+
+.react-datepicker__input-container {
+  display: flex;
+}
+
+.something {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  text-align: center;
+  width: 100%;
+
+  &:focus {
+    outline-color: var(--clr-accent);
+  }
+}
+
+.input-missing {
+  color: red;
 }

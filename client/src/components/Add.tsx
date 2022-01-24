@@ -1,31 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Add.scss';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'
 
 const Add = () => {
+  
+  const [amount, setAmount] = useState<number>(0)
+  const [category, setCategory] = useState<string>('')
+  const [date, setDate] = useState<any>(null)
+  const [comment, setComment] = useState<string>('')
+
+  const [amountClass, setAmountClass] = useState<string>('')
+  const [categoryClass, setCategoryClass] = useState<string>('')
+  const [dateClass, setDateClass] = useState<string>('')
+
+  const handleClick = () => {
+    amount === 0 ? setAmountClass('input-missing') : setAmountClass('')
+    category === '' || category === 'Select category' ? setCategoryClass('input-missing') : setCategoryClass('')
+    date === null ? setDateClass('input-missing') : setDateClass('');
+    
+    if (amount === 0 || category === '' || category === 'Select category' || date === null) return;
+    const object = { amount, category, date: date.toLocaleDateString('en-GB'), comment}
+    // SEND TO BACKEND
+  }
+
   return ( 
     <div className="add">
       <h1 className="add__heading">Add expense</h1>
       
       <div className="add__inputs">
         <div className="add__inputs__container">
-          <h2 className="add__inputs__container__title">Amount:</h2>
-          <input className="add__inputs__container__input" type="number" placeholder="....."/>
+          <h2 className={`add__inputs__container__title ${amountClass}`}>Amount:</h2>
+          <input 
+            className={`add__inputs__container__input`}
+            type="number" 
+            placeholder="....."
+            value={amount}
+            onChange={e => setAmount(Number(e.target.value))}
+          />
         </div>
         <div className="add__inputs__container">
-          <h2 className="add__inputs__container__title">Category:</h2>
-          <input className="add__inputs__container__input" type="text" placeholder="....."/>
+          <h2 className={`add__inputs__container__title ${categoryClass}`}>Category:</h2>
+          <select 
+            className="add__inputs__container__input"
+            onChange={e => setCategory(e.target.value) }
+          >
+            <option className="add__inputs__container__option">Select category</option>
+            <option className="add__inputs__container__option">Home</option>
+            <option className="add__inputs__container__option">Groceries</option>
+            <option className="add__inputs__container__option">Travel</option>
+            <option className="add__inputs__container__option">Other</option>
+          </select>
         </div>
         <div className="add__inputs__container">
-          <h2 className="add__inputs__container__title">Date:</h2>
-          <input className="add__inputs__container__input" type="text" placeholder="....."/>
+          <h2 className={`add__inputs__container__title ${dateClass}`}>Date:</h2>
+          <DatePicker 
+            selected={date} 
+            onChange={date => setDate(date)}
+            dateFormat='dd/MM/yyyy'
+            className="something"
+            placeholderText="Click to select a date"
+          />
         </div>
         <div className="add__inputs__container">
           <h2 className="add__inputs__container__title">Comment:</h2>
-          <input className="add__inputs__container__input" type="text" placeholder="....."/>
+          <input 
+            className="add__inputs__container__input" 
+            type="text" 
+            placeholder="....."
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
         </div>
       </div>
 
-      <button className="add__button">Save</button>
+      <button className="add__button" onClick={handleClick}>Save</button>
     </div>
   )
 };
