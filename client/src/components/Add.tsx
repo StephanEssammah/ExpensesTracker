@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import './Add.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from "axios"
+
+const API = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001/'
 
 const Add = () => {
-  
-  const [amount, setAmount] = useState<number>(0)
+  const [amount, setAmount] = useState<any>('')
   const [category, setCategory] = useState<string>('')
   const [date, setDate] = useState<any>(null)
   const [comment, setComment] = useState<string>('')
@@ -14,14 +16,14 @@ const Add = () => {
   const [categoryClass, setCategoryClass] = useState<string>('')
   const [dateClass, setDateClass] = useState<string>('')
 
-  const handleClick = () => {
-    amount === 0 ? setAmountClass('input-missing') : setAmountClass('')
+  const handleClick = async () => {
+    amount === '' ? setAmountClass('input-missing') : setAmountClass('')
     category === '' || category === 'Select category' ? setCategoryClass('input-missing') : setCategoryClass('')
     date === null ? setDateClass('input-missing') : setDateClass('');
     
     if (amount === 0 || category === '' || category === 'Select category' || date === null) return;
-    const object = { amount, category, date: date.toLocaleDateString('en-GB'), comment}
-    // SEND TO BACKEND
+    const expense = { amount, category, date, comment}
+    await axios.post(`${API}addExpense`, { expense })
   }
 
   return ( 
@@ -36,7 +38,7 @@ const Add = () => {
             type="number" 
             placeholder="....."
             value={amount}
-            onChange={e => setAmount(Number(e.target.value))}
+            onChange={e => setAmount(e.target.valueAsNumber)}
           />
         </div>
         <div className="add__inputs__container">
@@ -58,7 +60,7 @@ const Add = () => {
             selected={date} 
             onChange={date => setDate(date)}
             dateFormat='dd/MM/yyyy'
-            className="something"
+            className="datepicker-input"
             placeholderText="Click to select a date"
           />
         </div>

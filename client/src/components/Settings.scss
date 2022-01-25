@@ -1,0 +1,50 @@
+.settings {
+  background-color: var(--clr-background);
+  padding: 1em;
+  height: calc(100vh - 5em);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__heading {
+    font-weight: 500;
+    color: var(--clr-accent);
+  }
+
+  &__container { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--clr-container);
+    width: 100%;
+    border-radius: 35px;
+    padding: 0.5em 1em;
+    margin: 1em 0em;
+
+    &__title {
+      color: var(--clr-accent);
+    }
+
+    &__buttons {
+      width: 100%;
+      display: flex;
+
+      &__btn {
+        width: 100%;
+        background: none;
+        border: 3px solid white;
+        border-radius: 30px;
+        color: white;
+        font-size: 1.5em;
+        font-weight: 700;
+        margin: 0.5em;
+      }
+    }
+  }
+}
+
+.settings__btn-active {
+  background-color: var(--clr-accent);
+  border-color: var(--clr-accent);
+  color: var(--clr-background);
+}

@@ -1,36 +1,45 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { FiSettings } from 'react-icons/fi'
 import './Navbar.scss';
 
-interface Props {
-  setPage: React.Dispatch<React.SetStateAction<string>>
-}
 
-export const Navbar: React.FC<Props> = ({setPage}) => {
-  
-  
+export const Navbar = () => {
   return (
     <div className="nav">
-      <button 
-        className="nav__button nav__button__active"
-        onClick={() => setPage("Home") }
-        >
+      <NavLink to="/" 
+        style={({ isActive }) => {
+          return {
+            color: isActive ? "#CFEF0A" : ""
+          };
+        }}
+        className="nav__button">
         <AiOutlineHome size="3em" className="nav__logo"/>
         Home
-      </button>
-      <button 
+      </NavLink>
+      <NavLink to="/add" 
         className="nav__button"
-        onClick={() => setPage("Add") }
+        style={({ isActive }) => {
+          return {
+            color: isActive ? "#CFEF0A" : ""
+          };
+        }}
         >
         <IoMdAddCircleOutline size="3em"/>
         Add
-      </button>
-      <button className="nav__button">
+      </NavLink>
+      <NavLink to="/settings" 
+        style={({ isActive }) => {
+          return {
+            color: isActive ? "#CFEF0A" : ""
+          };
+        }}
+        className="nav__button">
         <FiSettings size="3em"/>
         Settings
-      </button>
+      </NavLink>
     </div>
   )
 };

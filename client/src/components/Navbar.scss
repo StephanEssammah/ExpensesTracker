@@ -6,6 +6,7 @@
   filter: drop-shadow(0 -0.1em 1em #d0ef0a3d);
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   &__button {
     background: none;
@@ -15,13 +16,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    &__active {
-      color: var(--clr-accent);
-    }
+    text-decoration: none;
   }
-}
-
-.nav__logo {
-  color: red;
 }
