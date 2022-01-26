@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import './Add.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from "axios"
+import { useNavigate } from 'react-router-dom'
 
 const API = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001/'
 
@@ -15,6 +16,7 @@ const Add = () => {
   const [amountClass, setAmountClass] = useState<string>('')
   const [categoryClass, setCategoryClass] = useState<string>('')
   const [dateClass, setDateClass] = useState<string>('')
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     amount === '' ? setAmountClass('input-missing') : setAmountClass('')
@@ -24,6 +26,7 @@ const Add = () => {
     if (amount === 0 || category === '' || category === 'Select category' || date === null) return;
     const expense = { amount, category, date, comment}
     await axios.post(`${API}addExpense`, { expense })
+    navigate('/')
   }
 
   return ( 

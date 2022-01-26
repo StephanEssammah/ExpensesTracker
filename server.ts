@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import { MongoClient } from "mongodb"
 import dotenv from "dotenv"
+import { generateGraphData, splitDataIntoCategories } from "./utils"
 dotenv.config()
 
 
@@ -13,8 +14,9 @@ app.use(express.json())
 
 const { MONGO_USER, MONGO_PASSWORD } = process.env
 const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@salt1.r85z6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri);
 const collection = client.db("ExpensesTracker").collection("users")
+
 
 app.post('/addExpense', async (req, res) => {
   const { amount, category, date, comment  } = req.body.expense
@@ -35,43 +37,25 @@ app.post('/addExpense', async (req, res) => {
   res.end();
 })
 
+
 app.get('/expenses', async (req, res) => {
-  // send user from frontend
-  const { month } = req.query
+  if (typeof req.query.month !== "string") {
+    throw new Error("Query param 'month' has to be of type string");
+  }
+  const month = req.query.month.toString()
+
   await client.connect()
-  const document = await collection.find({ user: 'stephan'}).project({[month]: 1}).toArray();
+  const document = await collection.findOne({ user: 'stephan'}, {projection: {[month]: 1}});
   await client.close();
 
-  const graphData = []
-  for(let i = 1; i < 30; i++) {
-    const amount = document[0][month].reduce((prev, curr) => {
-      const day = Number(curr.date.split('/')[0])
-      if (day === i) return prev + curr.amount
-      return prev + 0
-    }, 0)
-    graphData.push({value: amount, date: i})
+  if (document === null) {
+    throw new Error("No document found");
   }
-
-  const categories = {
-    total: 0,
-    home: 0,
-    groceries: 0,
-    travel: 0,
-    other: 0,
-  }
- 
-  document[0][month].forEach((expense) => {
-    categories.total += expense.amount
-    if(expense.category === 'Other') return categories.other += expense.amount
-    if(expense.category === 'Travel') return categories.travel += expense.amount
-    if(expense.category === 'Groceries') return categories.groceries += expense.amount
-    if(expense.category === 'Home') return categories.home += expense.amount
-  })
-
+  
+  const graphData = generateGraphData(document[month])
+  const categories = splitDataIntoCategories(document[month])
   res.status(200)
   res.json({graphData, categories});
 })
-
-
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
