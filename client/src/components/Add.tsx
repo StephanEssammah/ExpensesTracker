@@ -23,7 +23,7 @@ const Add = () => {
     category === '' || category === 'Select category' ? setCategoryClass('input-missing') : setCategoryClass('')
     date === null ? setDateClass('input-missing') : setDateClass('');
     
-    if (amount === 0 || category === '' || category === 'Select category' || date === null) return;
+    if (amount === 0 || amount === '' || category === '' || category === 'Select category' || date === null) return;
     const expense = { amount, category, date, comment}
     await axios.post(`${API}addExpense`, { expense })
     navigate('/')

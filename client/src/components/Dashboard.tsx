@@ -16,23 +16,39 @@ interface Props {
 }
 
 const Dashboard: React.FC<Props> = ({month, setMonth, chartType}) => {
+  const [fetching, setFetching] = useState(false)
   const [data, setData] = useState(
     {
       graphData: [],
       categories: {
         total: 0,
-        home: 0,
-        groceries: 0,
-        travel: 0,
-        other: 0,
+        home: {
+          value: 0,
+          transactions: 0,
+        },
+        groceries: {
+          value: 0,
+          transactions: 0,
+        },
+        travel: {
+          value: 0,
+          transactions: 0,
+        },
+        other: {
+          value: 0,
+          transactions: 0,
+        },
+
       }
     }
   )
 
   useEffect(() => {
     const fetchData = async () => {
+      setFetching(true)
       const stats = await axios.get(`${API}expenses`, { params: {'month': month}})
       setData(stats.data)
+      setFetching(false)
     }
     fetchData()
   }, [month])
@@ -43,12 +59,12 @@ const Dashboard: React.FC<Props> = ({month, setMonth, chartType}) => {
       <div className="dashboard__top">
         <button 
           className="dashboard__top__button"
-          onClick={() => setMonth(prevMonth => prevMonth - 1)}
+          onClick={() => setMonth(prevMonth => (!fetching && prevMonth !== 0) ? prevMonth - 1 : prevMonth)}
         >&lt;</button>
         <p>{month}</p>
         <button 
           className="dashboard__top__button"
-          onClick={() => setMonth(prevMonth => prevMonth + 1)}
+          onClick={() => setMonth(prevMonth => (!fetching && prevMonth !== 11) ? prevMonth + 1 : prevMonth)}
         >&gt;</button>
       </div>
 
@@ -60,19 +76,19 @@ const Dashboard: React.FC<Props> = ({month, setMonth, chartType}) => {
       <div className="dashboard__categories">
         <DashboardCategory 
           category='Home' 
-          amount={data.categories.home} 
+          data={data.categories.home} 
           Icon={() => <AiOutlineHome size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
         <DashboardCategory 
           category='Groceries' 
-          amount={data.categories.groceries} 
+          data={data.categories.groceries} 
           Icon={() => <GiMeal size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
         <DashboardCategory 
           category='Travel' 
-          amount={data.categories.travel} 
+          data={data.categories.travel} 
           Icon={() => <AiFillCar size="2.5em" className="dashboard__categories__category__left__logo"/>}/>
         <DashboardCategory 
           category='Other' 
-          amount={data.categories.other} 
+          data={data.categories.other} 
           Icon={() => <MdCategory size="2.5em" className="dashboard__categories__category__left__logo"/>} />
       </div>
     </div>
