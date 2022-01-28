@@ -13,6 +13,7 @@ interface Document {
   category: string;
   date: string;
   comment: string;
+  id: number;
 }
 
 export const sortTransactions = (document: Array<Document>) => {
@@ -20,7 +21,8 @@ export const sortTransactions = (document: Array<Document>) => {
     amount: number,
     category: string,
     date: string,
-    comment: string
+    comment: string,
+    id: number,
   }
   return document.sort((a: Day, b: Day) => {
     const dayOne = a.date.split('/')[0]

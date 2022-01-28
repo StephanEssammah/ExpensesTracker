@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
+  overflow-y: scroll;
 
   &__month-selection{
     width: 100%;
@@ -26,41 +26,68 @@
     font-weight: 500;
     color: var(--clr-accent);
   }
-
+  
   &__container {
     background-color: var(--clr-container);
     border-radius: 35px;
     padding: 1em;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 1em;
     width: 100%;
 
-    &__left {
+    &__main {
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
       
-      &__logo {
-        margin-right: 0.75em;
-        size: 5em;
-      }
-
-      &__name {
-        line-height: 1.17em;
-        font-weight: 500;
-      }
+          &__left {
+            display: flex;
+            align-items: center;
+            
+            &__logo {
+              margin-right: 0.75em;
+              size: 5em;
+            }
       
-      &__transactions {
-        line-height: 1em;
-        color: rgba(255, 255, 255, 0.5);
+            &__name {
+              line-height: 1.17em;
+              font-weight: 500;
+            }
+            
+            &__transactions {
+              line-height: 1em;
+              color: rgba(255, 255, 255, 0.5);
+            }
+          }
+          &__amount {
+            color: var(--clr-accent);
+          }
+
+    }
+    &__buttons {
+      margin-top: 0.5em;
+      display: flex;
+      justify-content: space-between;
+
+      &__btn {
+        width: 48%;
+        border: none;
+        border-radius: 30px;
+        padding: 0.4em;
+        font-weight: 500;
+
+        &--edit {
+          color: var(--clr-background);
+        }
+        &--delete {
+          background-color: rgb(168, 20, 20);
+  
+        }
+
       }
+
     }
 
-    &__amount {
-      color: var(--clr-accent);
-    }
-  
+
 }
 }

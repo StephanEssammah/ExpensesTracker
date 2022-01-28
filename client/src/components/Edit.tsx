@@ -3,15 +3,18 @@ import './Add.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from "axios"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const API = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001/'
-
-const Add = () => {
-  const [amount, setAmount] = useState<any>('')
-  const [category, setCategory] = useState<string>('')
-  const [date, setDate] = useState<any>(null)
-  const [comment, setComment] = useState<string>('')
+const Edit = () => {
+  const { state }: any = useLocation()
+  const dateParts = state.date.split('/')
+  const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+ 
+  const [amount, setAmount] = useState<any>(state.amount)
+  const [category, setCategory] = useState<string>(state.category)
+  const [date, setDate] = useState<any>(dateObject)
+  const [comment, setComment] = useState<string>(state.comment)
 
   const [amountClass, setAmountClass] = useState<string>('')
   const [categoryClass, setCategoryClass] = useState<string>('')
@@ -25,13 +28,13 @@ const Add = () => {
     
     if (amount === 0 || amount === '' || category === '' || category === 'Select category' || date === null) return;
     const expense = { amount, category, date, comment}
-    await axios.post(`${API}addExpense`, { expense })
-    navigate('/')
+    await axios.put(`${API}update`, { oldExpense: {id: state.id, month: state.month}, newExpense: expense })
+    // navigate('/')
   }
 
   return ( 
     <div className="add">
-      <h1 className="add__heading">Add expense</h1>
+      <h1 className="add__heading">Edit expense</h1>
       
       <div className="add__inputs">
         <div className="add__inputs__container">
@@ -41,13 +44,14 @@ const Add = () => {
             type="number" 
             placeholder="....."
             value={amount}
-            onChange={e => e.target.value === '' ? setAmount(e.target.value) : setAmount(e.target.valueAsNumber)}
+            onChange={e => e.target.value === "" ? setAmount(e.target.value) : setAmount(e.target.valueAsNumber)}
           />
         </div>
         <div className="add__inputs__container">
           <h2 className={`add__inputs__container__title ${categoryClass}`}>Category:</h2>
           <select 
             className="add__inputs__container__input"
+            value={category}
             onChange={e => setCategory(e.target.value) }
           >
             <option className="add__inputs__container__option">Select category</option>
@@ -84,4 +88,4 @@ const Add = () => {
   )
 };
 
-export default Add;
+export default Edit;

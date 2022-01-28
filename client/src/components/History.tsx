@@ -17,14 +17,19 @@ interface Expense {
   category: string
   date: string
   comment: string
+  id: number
+  month: string
 }
 export const History: React.FC<Props> =  ({month, setMonth}) => {
   const [data, setData] = useState([])
+  const [fetching, setFetching] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
+      setFetching(true)
       const stats = await axios.get(`${API}history`, { params: {'month': month}})
       setData(stats.data)
+      setFetching(false)
     }
     fetchData()
   }, [month])
@@ -52,12 +57,12 @@ export const History: React.FC<Props> =  ({month, setMonth}) => {
       <div className="history__month-selection">
         <button 
           className="history__month-selection__button"
-          onClick={() => setMonth(prevMonth => prevMonth - 1)}
+          onClick={() => setMonth(prevMonth => (!fetching && prevMonth !== 0) ? prevMonth - 1 : prevMonth)}
         >&lt;</button>
         <p>{month}</p>
         <button 
           className="history__month-selection__button"
-          onClick={() => setMonth(prevMonth => prevMonth + 1)}
+          onClick={() => setMonth(prevMonth => (!fetching && prevMonth !== 11) ? prevMonth + 1 : prevMonth)}
         >&gt;</button>
       </div>
 
@@ -68,7 +73,11 @@ export const History: React.FC<Props> =  ({month, setMonth}) => {
           amount={expense.amount} 
           category={expense.category} 
           date={expense.date} 
-          comment={expense.comment} 
+          comment={expense.comment}
+          id={expense.id}
+          month={month}
+          data={data}
+          setData={setData}
           Icon={() => getIconFromCategory(expense.category)}
         />
       ))}

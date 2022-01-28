@@ -1,7 +1,14 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import { MongoClient } from 'mongodb'
 import { sortTransactions, getDocument, updateDocument, generateGraphData, splitDataIntoCategories } from "./utils"
+
+const { MONGO_USER, MONGO_PASSWORD } = process.env
+const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@salt1.r85z6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+const collection = client.db("ExpensesTracker").collection("users")
+
 
 dotenv.config()
 
@@ -21,7 +28,8 @@ app.post('/addExpense', async (req, res) => {
     amount,
     category,
     'date': fullDate.toLocaleDateString('en-GB'),
-    comment
+    comment,
+    id: Date.now()
   }
 
   await updateDocument(month, expense)
@@ -48,10 +56,41 @@ app.get('/history', async (req, res) => {
   }
   const month = req.query.month.toString()
   const document = await getDocument(req, month)
+  if (document[month] === undefined) {
+
+    res.status(200)
+    res.json([])
+    return;
+  }
   const sorted = sortTransactions(document[month])
 
   res.status(200)
   res.json(sorted)
+})
+
+app.delete('/delete', async (req, res) => {
+  await client.connect()
+  await collection.updateOne( {user: 'stephan'}, { $pull: {[req.body.month]: { id: req.body.id } }})
+  await client.close();
+  res.status(200).end()
+})
+
+app.put('/update', async (req, res) => {
+  const {oldExpense, newExpense} = req.body
+  const fullDate = new Date(newExpense.date)
+  const month = fullDate.toLocaleString('en-GB', { month: 'long' })
+  const expense = {
+    amount: newExpense.amount,
+    category: newExpense.category,
+    date: fullDate.toLocaleDateString('en-GB'),
+    comment: newExpense.comment,
+    id: oldExpense.id
+  }
+  await client.connect()
+  await collection.updateOne( {user: 'stephan'}, { $pull: {[oldExpense.month]: { id: oldExpense.id } }})
+  await collection.updateOne( {user: 'stephan'}, { $push: { [month]: expense } })
+  await client.close();
+  res.status(200).end()
 })
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
