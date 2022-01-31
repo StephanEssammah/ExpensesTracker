@@ -2,7 +2,10 @@
   background-color: var(--clr-background);
   padding: 1em;
   height: calc(100vh - 5em);
+  max-width: 1025px;
+  margin: 0 auto;
 }
+
 
 .dashboard__top {
   display: flex;
@@ -16,6 +19,7 @@
   }
 }
 
+
 .dashboard__mid {
   margin-top: 1em;
   display: flex;
@@ -27,8 +31,8 @@
   }
 }
 
-.dashboard__categories {
 
+.dashboard__categories {
   &__category {
     background-color: var(--clr-container);
     border-radius: 35px;
@@ -65,9 +69,82 @@
   }
 }
 
+
 .chart {
   margin-left: -0.5em;
 }
 
 
+@media screen and (min-width: 481px) {
+  .dashboard {
+    padding: var(--padding-481)
+  }
+}
+
+
+@media screen and (min-width: 769px) {
+  .dashboard {
+    padding: var(--padding-769);
+
+    &__top {
+      background-color: var(--clr-container);
+      padding: 0em 1em;
+      border-radius: 35px;
+      width: 60%;
+      margin: 0 auto;
+    }
+  
+    &__categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+
+      &__category {
+        flex-direction: column;
+        margin-bottom: 0em;
+
+        &__left {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+
+          &__logo {
+            margin: 0;
+          }
+        }
+
+        &__amount {
+          margin-top: 1em;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .dashboard {
+    padding: var(--padding-1025);
+    &__top {
+      margin: 0 auto;
+      width: 40%;
+    }
+}
+
+  .dashboard__categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2em;
+
+    &__category {
+      margin-bottom: 1em;
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .dashboard__top {
+    width: 430px;
+  }
+}
 

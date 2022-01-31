@@ -39,7 +39,6 @@
     
         &:focus {
           outline-color: var(--clr-accent);
-    
         }
       }
 
@@ -66,6 +65,7 @@
   display: flex;
 }
 
+
 .datepicker-input {
   background: none;
   border: none;
@@ -78,6 +78,46 @@
   }
 }
 
+
 .input-missing {
   color: red;
+}
+
+
+@media screen and (min-width: 481px) {
+  .add {
+    padding: var(--padding-481)
+  }
+}
+
+
+@media screen and (min-width: 769px) {
+  .add {
+    padding: var(--padding-769);
+
+    &__inputs {
+      width: 60%;
+      max-width: 430px;
+    }
+
+    &__button {
+      width: 60%;
+      max-width: 430px;
+    }
+  }
+}
+
+
+@media screen and (min-width: 1025px) {
+  .add {
+    padding: var(--padding-1025);
+
+    &__inputs {
+      width: 40%;
+    }
+
+    &__button {
+      width: 40%;
+    }
+  }
 }

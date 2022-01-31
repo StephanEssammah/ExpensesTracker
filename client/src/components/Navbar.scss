@@ -5,17 +5,55 @@
   color: white;
   filter: drop-shadow(0 -0.1em 1em #d0ef0a3d);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
 
-  &__button {
-    background: none;
-    border: none;
-    line-height: 1em;
+  &__buttons {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    text-decoration: none;
+
+    &__btn{
+      background: none;
+      border: none;
+      line-height: 1em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
   }
+}
+
+
+@media screen and (min-width: 481px) {
+  .nav {
+    padding: var(--padding-481)
+  }
+}
+
+
+@media screen and (min-width: 769px) {
+  .nav {
+    padding: 0 var(--padding-769);
+
+    &__buttons {
+      width: 60%;
+      max-width: 430px;
+    }
+  }
+
+}
+
+
+@media screen and (min-width: 1025px) {
+  .nav {
+    padding: 0 var(--padding-1025);
+
+    &__buttons {
+      width: 40%;
+    }
+  }
+
 }

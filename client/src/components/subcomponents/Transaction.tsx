@@ -48,7 +48,7 @@ export const Transaction: React.FC<Props> = ({amount, category, date, comment, i
         <div className="history__container__main__left">
           <Icon />
           <div>
-            <h3 className="history__cotainer__main__left__name">{category}</h3>
+            <h3 className="history__container__main__left__name">{category}</h3>
             <p className="history__container__main__left__transactions">{date}</p>
           </div>
         </div>

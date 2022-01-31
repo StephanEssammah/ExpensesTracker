@@ -24,6 +24,7 @@
 
   &__heading {
     font-weight: 500;
+    margin-bottom: 0.5em;
     color: var(--clr-accent);
   }
   
@@ -87,7 +88,51 @@
       }
 
     }
-
-
+  }
 }
+
+@media screen and (min-width: 481px) {
+  .history {
+    padding: var(--padding-481)
+  }
+}
+
+
+@media screen and (min-width: 769px) {
+  .history {
+    padding: var(--padding-769);
+
+    &__container {
+      max-width: 430px;
+
+      &__main__left__name,
+      &__main__left__transactions {
+          margin-left: 0.5em;
+      }
+    }
+
+    &__month-selection {
+      background-color: var(--clr-container);
+      padding: 0em 1em;
+      border-radius: 35px;
+      width: 60%;
+      margin: 0 auto;
+      max-width: 430px;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .history {
+    padding: var(--padding-1025);
+
+    &__month-selection {
+      margin: 0 auto;
+      width: 40%;
+    }
+
+    &__container {
+      width: 40%;
+    }
+  }
 }

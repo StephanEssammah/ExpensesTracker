@@ -48,3 +48,27 @@
   border-color: var(--clr-accent);
   color: var(--clr-background);
 }
+
+@media screen and (min-width: 481px) {
+  .settings {
+    padding: var(--padding-481)
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .settings {
+    padding: var(--padding-769);
+    &__container {
+      max-width: 430px;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .settings {
+    padding: var(--padding-1025);
+    &__container {
+      width: 40%;
+    }
+  }
+}
