@@ -18,6 +18,7 @@
       background: none;
       border: none;
       font-size: 1.25em;
+      cursor: pointer;
     }
   }
 
@@ -34,6 +35,7 @@
     padding: 1em;
     margin-bottom: 1em;
     width: 100%;
+    cursor: pointer;
 
     &__main {
       display: flex;
@@ -76,6 +78,7 @@
         border-radius: 30px;
         padding: 0.4em;
         font-weight: 500;
+        cursor: pointer;
 
         &--edit {
           color: var(--clr-background);

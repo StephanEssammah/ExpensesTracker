@@ -29,7 +29,7 @@ const Edit = () => {
     if (amount === 0 || amount === '' || category === '' || category === 'Select category' || date === null) return;
     const expense = { amount, category, date, comment}
     await axios.put(`${API}update`, { oldExpense: {id: state.id, month: state.month}, newExpense: expense })
-    // navigate('/')
+    navigate('/')
   }
 
   return ( 
