@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import path from "path"
 import { sortTransactions, getDocument, addExpense, updateExpense, generateGraphData, splitDataIntoCategories, deleteExpense } from "./utils"
 dotenv.config()
 
@@ -67,5 +68,12 @@ app.put('/update', async (req, res) => {
   await updateExpense(req)
   res.status(200).end()
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
