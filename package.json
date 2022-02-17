@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "npx ts-node server.ts",
+    "start": "node ./server/server.js",
     "dev": "nodemon --exec npx ts-node server.ts",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && tsc"
   },
   "repository": {
     "type": "git",
