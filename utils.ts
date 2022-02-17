@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb"
 import dotenv from "dotenv"
+import { Document, Day, Category } from './interfaces'
 dotenv.config()
 
 const { MONGO_USER, MONGO_PASSWORD } = process.env
@@ -7,23 +8,12 @@ const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@salt1.r85z6.mongodb.n
 const client = new MongoClient(uri);
 const collection = client.db("ExpensesTracker").collection("users")
 
+const connectToDB = async () => await client.connect()
+connectToDB()
 
-interface Document {
-  amount: number;
-  category: string;
-  date: string;
-  comment: string;
-  id: number;
-}
+
 
 export const sortTransactions = (document: Array<Document>) => {
-  interface Day {
-    amount: number,
-    category: string,
-    date: string,
-    comment: string,
-    id: number,
-  }
   return document.sort((a: Day, b: Day) => {
     const dayOne = a.date.split('/')[0]
     const dayTwo = b.date.split('/')[0]
@@ -32,10 +22,9 @@ export const sortTransactions = (document: Array<Document>) => {
 }
 
 
+
 export const getDocument = async (req: any, month: string) => {
-  await client.connect()
   const document = await collection.findOne({ user: 'stephan'}, {projection: {[month]: 1}});
-  await client.close();
   if (document === null) {
     throw new Error("No document found");
   }
@@ -44,16 +33,13 @@ export const getDocument = async (req: any, month: string) => {
 
 
 
-export const updateDocument = async (month: string, expense: object) => {
-  await client.connect()
+export const addExpense = async (month: string, expense: object) => {
   await collection.updateOne( {user: 'stephan'}, { $push: { [month]: expense } })
-  await client.close();
 }
 
 
 
 export const generateGraphData = (document: Array<Document>) => {
-
   const graphData = []
   if (document === undefined) {
     for(let i = 1; i < 30; i++) {
@@ -75,27 +61,8 @@ export const generateGraphData = (document: Array<Document>) => {
 
 
 export const splitDataIntoCategories = (document: Array<Document>) => {
-  interface Categories {
-    home: {
-      value: number,
-      transactions: number,
-    },
-    groceries: {
-      value: number,
-      transactions: number,
-    },
-    travel: {
-      value: number,
-      transactions: number,
-    },
-    other: {
-      value: number,
-      transactions: number,
-    },
-  }
 
-
-  const categories: Categories =  {
+  const categories: Category =  {
     home: {
       value: 0,
       transactions: 0,
@@ -140,8 +107,28 @@ export const splitDataIntoCategories = (document: Array<Document>) => {
   document.forEach((expense) => {
     const expenseCategory: string = expense.category.toLocaleLowerCase()
     total += expense.amount
-    categories[expenseCategory as keyof Categories].value += expense.amount
-    categories[expenseCategory as keyof Categories].transactions++
+    categories[expenseCategory as keyof Category].value += expense.amount
+    categories[expenseCategory as keyof Category].transactions++
   })
   return {total, ...categories};
+}
+
+export const deleteExpense = async (req: any) => {
+  await collection.updateOne( {user: 'stephan'}, { $pull: {[req.body.month]: { id: req.body.id } }})
+}
+
+export const updateExpense = async (req: any) => {
+  const {oldExpense, newExpense} = req.body
+  const fullDate = new Date(newExpense.date)
+  const month = fullDate.toLocaleString('en-GB', { month: 'long' })
+  const expense = {
+    amount: newExpense.amount,
+    category: newExpense.category,
+    date: fullDate.toLocaleDateString('en-GB'),
+    comment: newExpense.comment,
+    id: oldExpense.id
+  }
+  
+  await collection.updateOne( {user: 'stephan'}, { $pull: {[oldExpense.month]: { id: oldExpense.id } }})
+  await collection.updateOne( {user: 'stephan'}, { $push: { [month]: expense } })
 }
