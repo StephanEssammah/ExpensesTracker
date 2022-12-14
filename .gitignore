@@ -1,3 +1,6 @@
+# Compiled server files
+server/
+
 # Logs
 logs
 *.log
