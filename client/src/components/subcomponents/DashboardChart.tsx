@@ -7,7 +7,6 @@ import {
   XAxis,
   YAxis,
   Area,
-  Tooltip,
   CartesianGrid,
 } from 'recharts'
 
